@@ -10,8 +10,7 @@
   - **语音 + 文本 SLM**：使用配对的（**语音、文本转录**）数据训练，也是**预训练模型＋post training**
   - **语音感知文本 LM**：既保留文本 LLMs 的**IF**特性，又能对输入音频片段进行推理 → 响应输入语音和文本指令的期望输出文本的分布。**微调 LLMs＋post training**
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119131734806.png" alt="image-20251119131734806" style="zoom:50%;" /> 
-
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119131734806.png" alt="image-20251119131734806" style="zoom:50%;" /> 
 常见语音任务： **SOTA** 处理方法 → 将预训练的自监督**编码器**模型与任务特定的预测 “头部”（**head**）相结合。 
 
 - 自动语音识别（ASR）
@@ -28,7 +27,7 @@
 - 语音解码器替换普通解码器
 - 输入输出根据需要选择语音与文本
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119134053265.png" alt="image-20251119134053265" style="zoom: 50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119134053265.png" alt="image-20251119134053265" style="zoom: 50%;" /> 
 
 
 
@@ -40,11 +39,11 @@
 
 总览：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119144746141.png" alt="image-20251119144746141" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119144746141.png" alt="image-20251119144746141" style="zoom:50%;" /> 
 
 #### 3.1.1 **语音表示模型**
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119145453620.png" alt="image-20251119145453620" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119145453620.png" alt="image-20251119145453620" style="zoom:50%;" /> 
 
 任务：将语音信号转换为连续的特征向量，然后再转化为离散的token（也可以不转）
 
@@ -57,7 +56,7 @@
 
 #### 3.1.2 语音token转换
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119151628072.png" alt="image-20251119151628072" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119151628072.png" alt="image-20251119151628072" style="zoom:50%;" /> 
 
 语音令牌分为两种：“语音学令牌（phonetic tokens）” 和 “音频编解码器令牌（audio codec tokens）”
 
@@ -95,7 +94,7 @@
 
 由于语音信号的**帧率较高**，量化语音特征序列的长度通常很长，通常会缩短序列长度。
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119155312885.png" alt="image-20251119155312885" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119155312885.png" alt="image-20251119155312885" style="zoom:50%;" /> 
 
 压缩方法：
 
@@ -107,7 +106,7 @@
 
 ### 3.2  Speech Modality Adapter
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119184855162.png" alt="image-20251119184855162" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119184855162.png" alt="image-20251119184855162" style="zoom:50%;" /> 
 
 **匹配**语音编码器的输出与序列模型的预期输入（语音编码器和序列模型通常是分开训练的）
 
@@ -126,7 +125,7 @@
 
   - **Q-Former**：把任意长度的语音特征序列，“整理” 成固定长度的向量，用**attention**的方式映射到M个向量（M是超参数，对应不同方面的特征，这M个特征向量是训练中得到的）
 
-    <img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119163418025.png" alt="image-20251119163418025" style="zoom:50%;" /> 
+    <img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119163418025.png" alt="image-20251119163418025" style="zoom:50%;" /> 
 
     由于用了attention，丢失了时间顺序，可以用窗口级 Q-Former解决：
 
@@ -138,7 +137,7 @@
 
 ### 3.3 Sequence Model
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119184836758.png" alt="image-20251119184836758" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119184836758.png" alt="image-20251119184836758" style="zoom:50%;" /> 
 
 开始生成 token ~
 
@@ -148,7 +147,7 @@
 
 具体架构如下：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119170923481.png" alt="image-20251119170923481" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119170923481.png" alt="image-20251119170923481" style="zoom:50%;" /> 
 
 - **先粗后细**（图a）：首先生成所有时间步的粗粒度令牌，接着以粗粒度令牌为条件生成细粒度令牌，最后生成更细粒度的令牌（自回归）。（如AudioLM）
 - **粗细令牌交替**（图b）：粗粒度、细粒度和更细粒度这三类令牌沿**时间轴对齐**并交织生成。在预测时间步t的令牌时，与t对应的粗粒度、细粒度和更细粒度令牌会被依次生成
@@ -165,7 +164,7 @@
 
 具体方法：
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119181355146.png" alt="image-20251119181355146" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119181355146.png" alt="image-20251119181355146" style="zoom:50%;" /> 
 
 - 在文本 token 序列后添加 **padding token**，解决序列长度不匹配的问题（文本序列会先结束，随后生成的文本将引导语音token序列的生成，类似文本转语音，图a）
 - 在**每个**文本token后添加固定的 **padding token**，同时也在语音token之间添加填充令牌，使两个序列长度一致（先生成文本token，利用生成的文本token预测语音学token，图b）
@@ -174,7 +173,7 @@
 
 ### 3.4 Speech Decoder
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119184919079.png" alt="image-20251119184919079" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119184919079.png" alt="image-20251119184919079" style="zoom:50%;" /> 
 
 将语音表示 （连续特征 / 语音学token / 音频编解码器token） 转换回**波形**
 
@@ -231,7 +230,7 @@
 
 指令微调数据通常包含一段**语音**录音、一条描述语音任务的**指令**（语音和文本都可以），以及对应的**真实输出**
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20251119194706103.png" alt="image-20251119194706103" style="zoom:50%;" /> 
+<img src="https://github.com/fengnian123/daily-study/blob/main/image/image-20251119194706103.png" alt="image-20251119194706103" style="zoom:50%;" /> 
 
 **数据**生成方式：有音频数据下可以转录为文本；有文本数据下转成语音
 
@@ -258,4 +257,5 @@ PEFT等微调方式，与LLM类似
 |:-----------------------:|:----------------------------------------------------------------------------:|:------------------------------------------------------------------------:|:------------------------------------------------------------------------:|
 | 纯语音                 （Pure Speech LM） | 以**无标签语音数据**为核心，训练单位为离散语音token | 实现语音续写、生成连贯语音片段，部分模型支持韵律建模（如音高、时长控制）   | GSLM、pGSLM、AudioLM、TWIST、SpeechSSM、Align-SLM                        |
 | 语音+文本LM（Speech+Text LM） | 依赖对齐的**语音-文本**数据，可通过TTS从文本数据集合成语音对话数据，或复用现有文本对话数据集 | 理解并生成**双模态**内容，支持长时长独白、多轮对话，部分模型具备**实时推理**能力 | Moshi、SpiRit-LM、SpeechGPT、**Mini-Omni**、**LLaMA-Omni**、GLM-4-Voice  |
+
 | 语音感知文本LM（Speech-aware text LM） |以文本输出为主要形式 | 需语音数据与文本指令数据结合，继承文本LLM的预训练基础，额外补充语音-文本模态对齐训练 | WavPrompt、SALMONN、**Qwen-Audio**、SLM、DeSTA、LTU-AS、DiscreteSLU、UniverSLU、WavLLM、BESTOW |
